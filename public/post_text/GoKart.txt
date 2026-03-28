@@ -1,0 +1,75 @@
+<b>Problem Statement</b>:
+As with most 12-year-olds trapped at home, incapable of seeing their friends, the pandemic was incredibly boring for me. Thankfully, I had opened my interests to the world of engineering and became fascinated with car repair, electronics, and petrol engines. 
+
+<b>Mission</b>:
+With youthfull ambition and the desire to start a project capable of assisting in future projects, I started the process of building a small, two-seated vehicle capable of drive and neutral gears along with a steering shack. 
+
+<b>Requirements</b>:
+
+* Convert a verically-mounted lawnmower engine to a horizontal shaft motor capable of driving the rear axle on the vehicle. 
+* Create a steering assembly capable of rotating both front wheels with relative ease and little mechanical play. 
+* Create a frame strong enough to support my 100 pound body (This would change in the future!)
+* Create a reliable belt-driven linkage between the motor and the rear axle, allowing the driver to adjust tension to engage and disengage the clutch. 
+
+(NOTE: I started this project five years ago, so my recollection may not be perfect)
+
+<b>Initial Design</b>:
+I started building the frame on the mini vehicle by throwing together two chasse side beams and a rear mount for the engine I had relocated from an old lawn mower. 
+
+All internal combustion engines require sufficient lubriciation, with most yard mowers using a small pump to ensure oil travels through the crankshaft, to the piston rings, and other moving assemblies. This system would normally suffice, but since the vehicle requires a horizontally-mounted engine crankshaft, I needed to redesign this oil feeding system.
+
+I started by filing down the cast iron sleve around the crankshaft, removing the engine's front and rear oil seals to make this modification. I also used heat-resistant epoxy to fill old channels and ensure oil did not escape the newly-orientated motor. Furthermore, I added an crankshaft 'scoup' (a small protruding aluminum piece) to the crankshaft to ensure the oil in the sump was picked up and thrown against the piston walls to prevent scoring. 
+
+<b>MK1 (Early Pandemic)</b>
+Here was one of the first copies of the humble project. I was around 12 years old at the time, so my knowlege of mechanical engineering may have not been perfect.
+
+<img src="/post_images/GoKart/DF5A1F40-6D7E-4E73-AE01-3CC62F2C8324_1_105_c" alt="Description of the image" style="width: 100%; height: auto;">
+
+Starting from the front, a simple steering aluminum steering column controlled by an offset steering shaft arm joint moved the front wheels form side to side. Although this iteration was not sufficiently geared down or secured properly, it was able to drive.
+
+Following to the rear, my impromptu lawnmower engine shaft tranmits rotational power through a pulley reduction to the rear axel. As you could imagine, a significant amount of force was needed to put the vehicle into gear, i.e., pull the lever connected to a pulley snug against the belt hard enough for the engine to transmit energy to the drivetrain. 
+
+<img src="/post_images/GoKart/365D61B6-B9C5-4BDC-B8DF-397F389FFD85_1_105_c" alt="Description of the image" style="width: 100%; height: auto;">
+
+This first edition, although extremely primative and simplified, got things moving (pun intended)
+
+<b>Later Frame Adjustments and Engine Replacement</b>:
+
+The frame was later updated, adding far more beams to support the two-person load and upgrading the engine to a high-torque comerical motor and the transmission to a chain-drive with an adjustable tensioner.
+
+<img src="/post_images/GoKart/A93EB089-B173-499E-90A0-71CA04506A58_1_105_c" alt="Description of the image" style="width: 100%; height: auto;">
+
+A frontal bumber was added along with a replaced steering column--this time using steel instead of aluminum to handle the stress. 
+
+<img src="/post_images/GoKart/2F3643C9-578C-416E-B58A-F3C1D5FE2150_1_105_c" alt="Description of the image" style="width: 100%; height: auto;">
+
+An adjustable tensioner was mounted on the loose end of the engine, allowing for easy modifications.
+
+<b>Adding lights, drive sticks, a CVT transmission and more</b>:
+
+<img src="098184EF-3600-4714-BDFE-8BA2CCA367AF_1_105_c" alt="Description of the image" style="width: 100%; height: auto;">
+
+<img src="25A14684-F732-4E89-A860-88118092D917_1_102_o" alt="Description of the image" style="width: 100%; height: auto;">
+
+<b>Past and Future Projects Combined With the Small Vehicle</b>:
+
+Rear-Mounted Turret System:
+Soon to be posted <a href="/posts/10>here</a>
+
+Arduino PID for Yaw and Pitch Stepper Motor System
+Soon to be posted <a href="/posts/11>here</a>
+
+Electrical Routing for Multidirectional Turret
+Soon to be posted <a href="/posts/12>here</a>
+
+<b>Resources</b>:
+
+Vehicle/Various Accessories CAD <a href="https://cad.onshape.com/documents?nodeId=9949134198be861402e8bf00&resourceType=folder">here</a>
+
+Predator Engine <a href="https://www.harborfreight.com/brands/predator/engines.html">here</a>
+
+Stepper Motor Driver <a href="https://www.amazon.com/Purple-TMC2209-Module-Stepper-Printer/dp/B0FKG2PZLZ/ref=sr_1_4_sspa?dib=eyJ2IjoiMSJ9.GV128XORp0r3wV79x09f8T9cXh-swpK_3JLmyNIpW84vTXJDG-zmJT-g95VwiMiQUfEubW61Xq7edJwrL5TJ5uG4Crkd-Bx-1nxFogMSl575zZ-aJpLV3MddSn2O6O3yXch8F2ds_IHCNnCOMFw1SnYEYpFjVMol9XzX-fDJeKYO7j4olrB_nzBf7pn54aV7rngR5NxuCogWhLzXFiJULCGA_ijnuB1jsdtJWw5mjhA.GLNYiezkmQ31VWqh-zu_zdimIPR_E2xcF9N0IluF0Yk&dib_tag=se&keywords=tmc2209&qid=1774677838&sr=8-4-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9tdGY&psc=1">here</n>
+
+Servo <a href="https://www.digikey.com/en/products/detail/dfrobot/SER0067/23028647">here</a>
+
+Codebase (For later rear-mounted turret control) <a href="https://github.com/SailingDreamer/RaspberryPITurret">here</a>

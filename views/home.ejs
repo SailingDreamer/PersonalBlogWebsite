@@ -1,9 +1,11 @@
 <%- include('partials/header'); %>
 <h1>Home</h1>
-<p><%= homeStartingContent %></p>
+<p><%- homeStartingContent.replace(/\n/g, '<br>') %></p>
 <% posts.forEach(post => { %>
-   <h2><%= post.getTitle() %></h2>
-   <p class="postBody"><%= _.truncate(post.getBody(), {'length': 100, 'omission': ' ...'}) %></p>
+   <h2><%- post.getTitle().replace(/\n/g, '<br>') %></h2>
+   <p class="postBody"><%- _.truncate(post.getBody().replace(/\n/g, '<br>'), {'length': 100, 'omission': ' ...'}) %></p>
    <a href="/posts/<%= post.getID() %>">Read More</a>
 <% }) %>
 <%- include('partials/footer'); %>
+
+<!-- .replace('<b>', '').replace('</b>'', '') -->

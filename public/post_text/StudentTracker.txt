@@ -1,0 +1,67 @@
+<b>Problem Statement</b>:
+My high school computer science teacher frequently ran into issues with this students making excuses for leaving the classroom to lie and engage in non-permitted activites during class time. For example, a common occurance for his frustration was to have the same students consistenly ask to leave just to engage in banterful loitering outside of class. 
+
+<b>Mission</b>:
+I proposed set out requirements for me to develop a student tracking interface. The idea was simple: attach a GPS tracking device to the student bathroom pass and relay the location to a server when students left the class, collecing the information to ensure they didn't wander off the course to the restroom or stray beyound their duties. 
+
+<b>Requirements</b>:
+
+* Design a 
+* A system by which the orientation of this weapon can be adjusted.
+* A detection system capable of locating and tracking a rat in the vicinity of, or directly on, the birdfeeder.
+* Sufficient accuracy to hit the target rodent from five meters away with >50% accuracy.
+* A mountable and balanced interface compatible with a grounded deck or a chair.
+
+<b>Prototype</b>:
+I started by mocking up a small prototype of the turret, incorporating servo motors for yaw and pitch control. This setup, although fairly primitive, allowed me to experiment with various microcontrollers, such as the ESP32 and the Raspberry Pi, for Convolutional Neural Network (CNN) tracking and servo control.
+
+The original ESP32 used a camera to capture images, relaying the data over a Wi-Fi access point to my desktop computer, where the images were processed using the <a href="https://yolov8.com/">YOLO algorithm</a>. After the computer located the target object, the Cartesian coordinates were sent back to the ESP32, where the corresponding yaw and pitch adjustments would reorient the weapon toward the detected object.
+
+Although this setup provided a low-cost, lightweight solution, it required significant time to transmit images and receive coordinates, making it too slow for most rat-targeting applications.
+
+Fortunately, I had a Raspberry Pi 4 on hand, allowing me to run YOLO CNN inference directly on the turret and eliminate the delay caused by the external computer. However, because the Raspberry Pi 4 has a significantly larger form factor—and because the servos in the preliminary prototype lacked the custom PID control necessary to handle a heavier payload without jitter—I decided to redesign the turret using custom parts and stepper motors.
+
+<b>MK1 CAD/3D Printed Model</b>:
+Rather than assembling a second metal prototype for the stepper motor setup, I chose to design the unique belt-driven yaw and pitch mechanisms in CAD and 3D print them.
+
+<img src="/post_images/AITurret/IMG_5248.jpg" alt="Description of the image" style="width: 100%; height: auto;">
+
+Here is a picture of the 3D-printed turret bearing. Due to the large amount of force exerted downward, it is best to use a tank-style bearing to distribute the load and prevent shaft failure.
+
+<img src="/post_images/AITurret/IMG_5251.jpg" alt="Description of the image" style="width: 100%; height: auto;">
+
+Keyed shafts are used to ensure that the pulleys can be printed separately and remain rotationally fixed during assembly.
+
+Overall, the final assembly resembled the blocky turret shown below, featuring a sleeve to hold the gun, a yaw control mechanism with a belt tensioner, and a lower pitch control system with several bearings to maintain tolerances and ensure low friction.
+
+<img src="/post_images/AITurret/IMG_5244.jpg" alt="Description of the image" style="width: 100%; height: auto;">
+
+Unfortunately, I ran into some issues troubleshooting the servo and stepper motor control on the Raspberry Pi. Unlike the ESP32, the processor runs an entire OS, meaning the step or PWM signals are sometimes delayed, causing an unstable output. Because of this, I decided to program an Arduino nano (upper part of the following image) with a custom USB serial protocol I designed to send yaw and pitch movements and have the microprocessor manage the stepper motor PID and servo control. Below the microcontroller are two stepper motor drivers for the yaw and pitch control, each wired with their respective serial communication, power, two-coil output, and enable jumper wires.
+
+<img src="/post_images/AITurret/IMG_5247.jpg" alt="Description of the image" style="width: 100%; height: auto;">
+
+The Raspberry Pi is tucked into the other side of the electronics holder, housing the board, its output connectors, the 4K detection camera, and a powered fan to cool down the CPU fins as it runs the YOLO CNN.
+
+<img src="/post_images/AITurret/IMG_5249.jpg" alt="Description of the image" style="width: 100%; height: auto;">
+
+Thanks for reading through this description of the latest model!
+
+Here are the skeletal remains of the older ESP32 computer-turret prototype system. Although it could certainly track me as I walked around a room, it was far slower and more abrupt with non-PID configurable servos. Since it was merely a half-functional prototype, I had decided to machine some square-holed metal shafts to fit the yaw/pitch servos before glueing on a preliminary plate on the side for the ESP32.
+
+<img src="/post_images/AITurret/IMG_5250.jpg" alt="Description of the image" style="width: 100%; height: auto;">
+
+I also needed to solder a voltage-reducing buck converter to adjust the 9V+ battery voltage for the 5V servos and the microcontroller. Although I would recommend using a higher wattage reducer, <a href="https://www.digikey.com/en/products/detail/dfrobot/DFR0952/18069216?gclsrc=aw.ds&gad_source=1&gad_campaignid=20232005509&gbraid=0AAAAADrbLlgzd72Km0yhVADnGyU3KUjm_&gclid=Cj0KCQjw1ZjOBhCmARIsADDuFTCr6Oeg5VGvOvmBOS-64_CZCDZin1YixsS-FqGPT9qbPFgEnWuGlEwaAi0lEALw_wcB">this</a> small, easily soldered component seemed to preform well. 
+
+
+
+<b>Resources</b>:
+
+Codebase (compiled Jar application + Requirments + program code) <a href="https://github.com/SailingDreamer/Student-Tracker">here</a>
+
+ESP32 <a href="https://www.digikey.com/en/product-highlight/s/schtoeta/esp32-wroom-32-wi-fi-bluetooth-module">here</a>
+
+NEO 6M GPS Module <a href="https://www.amazon.com/Navigation-Positioning-Microcontroller-Compatible-Sensitivity/dp/B084MK8BS2">here</n>
+
+Servo <a href="https://www.digikey.com/en/products/detail/dfrobot/SER0067/23028647">here</a>
+
+Codebase (Raspberry Pi Python and C++ Arduino Nano stepper motor interface code) <a href="https://github.com/SailingDreamer/RaspberryPITurret">here</a>

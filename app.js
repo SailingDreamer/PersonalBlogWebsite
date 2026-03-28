@@ -22,18 +22,18 @@ and early age. From AI-tracking turrets to PCB design, I have immersed myself in
 landscape of intellecutal curiousity and STEM participation. 
 
 If you have any questions or wish to implement/imitate some of the resources presented in
-this project blog, feel free to reach out to me!  `;
+this project blog, feel free to reach out to me!`;
 
-const aboutContent = `Hello!\n
+const aboutContent = `Hello!
 
-I, Nathan Field-Patton, am a programming autodidact and engineering enthusiast with experience in 
-embedded engineering on various platforms. Throughout my career I have utilized autonomous systems, 
+I, Nathan Field-Patton, am a programming autodidact and engineering enthusiast with experience in
+embedded engineering on various platforms. Throughout my career I have utilized autonomous systems,
 low-level programming, CAD, and open-source contributions to contribute towards my unique and creative
 goals. I have also worked with complex teams in engaging environments, contributing while learning.`;
 
 const contactContent = `Personal email: nfieldpatton@email.com
 Phone number: 425 215-6361
-Or LinkedIn: https://www.linkedin.com/in/nathan-field-patton-a77bab27a/`
+LinkedIn: https://www.linkedin.com/in/nathan-field-patton-a77bab27a/`
 
 const app = express();
 app.locals._ = _
@@ -88,7 +88,7 @@ async function readWithPath(path) {
   // });
   try {
     const data = await fs.readFile(path, 'utf8');
-    console.log(data);
+    // console.log(data);
     return data;
   } catch (err) {
     console.error('Error reading the file:', err);
@@ -106,61 +106,57 @@ async function readWithPath(path) {
 
     // console.log('Content from calling function:', content);
     posts.push(new Post("AI Turret Project", await readWithPath("./public/post_text/AITurret.txt"), 0));
+
+    //DopFlow Phantom Machine
+    // posts.push(new Post("Open Source Phantom Doppler Machine", "Soon to be posted", 1));
+    posts.push(new Post("Open Source Phantom Doppler Machine", await readWithPath("./public/post_text/Phantom.txt"), 1));
+
+    //RatioZero transmission
+    // posts.push(new Post("Ratio Zero Transmission", "Soon to be posted", 2));
+
+    //Integrated room environment
+    // posts.push(new Post("Integrated room ESP32 environment", "Soon to be posted", 3));
+    posts.push(new Post("Integrated ESP32 environment Room", await readWithPath("./public/post_text/MorningLight.txt"), 3));
+
+      //Main controller
+      // posts.push(new Post("", "Soon to be posted", 4));
+
+      //BLE light switch.
+      // posts.push(new Post("", "Soon to be posted", 5));
+
+      //Vent fan control.
+      // posts.push(new Post("", "Soon to be posted", 6));
+
+      //Curtain-powering rope design.
+      // posts.push(new Post("", "Soon to be posted", 7));
+
+
+    //Student safety tracker (IB IA)
+    // posts.push(new Post("Student Safety Tracker", "", 8));
+    posts.push(new Post("Student Safety Tracker", await readWithPath("./public/post_text/StudentTracker.txt"), 8));
+
+
+    //go kart
+    // posts.push(new Post("Small vehicle Meta-project", "", 9));
+    posts.push(new Post("Small vehicle Meta-project", await readWithPath("./public/post_text/GoKart.txt"), 9));
+
+      //turret calculations
+      // posts.push(new Post("", "Soon to be posted", 10));
+
+      //Arduino PID for yaw and pitch stepper motor system
+      // posts.push(new Post("", "Soon to be posted", 11));
+
+      //electrical routing system for directional turret
+      // posts.push(new Post("", "Soon to be posted", 12));
+
+    //Car repairs
+    // posts.push(new Post("Car Repairs", "", 13));
+    // posts.push(new Post("Car Repairs", await readWithPath("./public/post_text/GoKart.txt"), 13));
+
   } catch (err) {
     console.error('Caught error in usage:', err.message);
   }
 })();
-
-// posts.push(new Post("AI Turret Project", readWithPath("./post_text/AITurret.txt"), 0));
-
-// const info = readWithPath("./post_text/AITurret.txt");
-
-// console.log("sldfjlskdjf")
-// console.log(info);
-
-// console.log((new Post("AI Turret Project", readWithPath("./post_text/AITurret.txt"), 0)).getBody());
-
-//DopFlow Phantom Machine
-posts.push(new Post("Open Source Phantom Doppler Machine", "Soon to be posted", 1));
-
-//RatioZero transmission
-posts.push(new Post("Ratio Zero Transmission", "Soon to be posted", 2));
-
-//Integrated room environment
-posts.push(new Post("Integrated room ESP32 environment", "Soon to be posted", 3));
-
-  //Main controller
-  posts.push(new Post("", "Soon to be posted", 4));
-
-  //BLE light switch.
-  posts.push(new Post("", "Soon to be posted", 5));
-
-  //Vent fan control.
-  posts.push(new Post("", "Soon to be posted", 6));
-
-  //Curtain-powering rope design.
-  posts.push(new Post("", "Soon to be posted", 7));
-
-
-//Student safety tracker (IB IA)
-posts.push(new Post("Student Safety Tracker", "", 8));
-
-
-//go kart
-posts.push(new Post("Small vehicle Meta-project", "", 9));
-
-  //turret calculations
-  posts.push(new Post("", "Soon to be posted", 10));
-
-  //Arduino PID for yaw and pitch stepper motor system
-  posts.push(new Post("", "Soon to be posted", 11));
-
-  //electrical routing system for directional turret
-  posts.push(new Post("", "Soon to be posted", 12));
-
-//Car repairs
-posts.push(new Post("Car Repairs", "", 13));
-
 
 function findFirstPostWithID(id) {
   return posts.find(post => {
@@ -173,7 +169,7 @@ function findFirstPostWithID(id) {
 app.get("/posts/:postId", (req, res) => {
   const requestedId = _.toString(req.params.postId);
 
-  console.log("retriving: " + requestedId); // fixed capitalization
+  // console.log("retriving: " + requestedId); // fixed capitalization
 
   // Post.findOne({ _id: requestedId }, (err, post) => {
   //   if (err) {
