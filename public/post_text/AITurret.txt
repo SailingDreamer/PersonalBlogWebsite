@@ -1,0 +1,62 @@
+<b>Problem Statement</b>:
+dfgdfgdUnfortuantely, my family's birdfeeder has always been riddled with the occassional rodent jumping up 
+and enjoying themselves with the seeds intented for aviators. Although we had tested previous traps, 
+such as spring-based mechanisms, water-induced drowning systems, and various alike, a more 
+curious approach is needed to ensure pests don't have the chance of perching themselves on our
+birdfeeder right as we were watching.
+
+<b>Mission</b>:
+
+
+<b>Requirements</b>:
+- A weapon strong enought to launch a projectile sufficient to deter or kill rats.
+- A system by which the orientation of this weapon can be changed.
+- A detection system capable of locating and tracking the rat in the vecinity around or
+  directly on the birdfeeder.
+- High enough accuracy to hit the supposed rodent from five meters away with >50% accuracy.
+- Mountable and balanced interface with a grounded deck or a chair.
+
+
+<b>Prototype</b>:
+I started by mocking up a small prototype of the turret, placing servo motors for yaw and pitch 
+control. This setup, although fairly primative, let me experiment with various microcontrollers
+like the ESP32 and the Raspberry PI for Convolutional Neural Network (CNN) tracking and servo control.
+
+The original ESP32 used a camera to take pictures, relaying the information over a WIFI Access point
+to my desktop computer where the images would be processed via the <a href="https://yolov8.com/">YOLO algorithm</a>.
+After the computer located the target object, the cartesian coordinates were relayed back to the ESP32
+where the associated yaw/pitch movements would reangle the weapon to point at the located object. 
+
+Although this setup provided a low-cost, low-weight solution, I had to sacrifice a significant amount of
+time to send the captured images to the computer and and recieve coordinates, making the implementation
+too slow for most rat-shooting applications.
+
+Fortunately, I had a Raspberry PI 4 on hand, allowing me to run the YOLO CNN inference on the turret itself
+and save the expensive computer delay. Seeing that the Raspberry PI 4 has a significantly larger form factor,
+and the servos on the preliminary prototype model lacked the custom PID loop nescessary to control a large
+gun weight without jittering uncontrollably, I decided to redesign the turret with custom parts and stepper
+motors. 
+
+<b>MK1 CAD/3D Printed Model</b>:
+Rather than throwing together a second metal prototype for the stepper motor setup, I decided to CAD the
+unique belt-drive yaw and pitch mechanisms and 3D print them. 
+
+Here is a picture of the 3D printed turret bearing. Due to the large amount of force exerted downards, it 
+is best to use a tank-style bearing to spread the weight out and avoid breaking the shaft.
+
+<img src="/post_images/AITurret/IMG_5244.jpg" alt="Description of the image" style="width: 100%; height: auto;>
+
+Keyed shafts are used to ensure the pulleys can be printed seperately and rotationally fixed during the
+process of assembly.
+
+
+
+
+
+
+<b>Resources</b>:
+
+Turret CAD <a href="https://cad.onshape.com/documents/af4f2c59bd16b472f7236e0d/w/7d34552d780fd280e1654eb1/e/8c22bd902f78d9b20b20fcf7">here</a>
+
+Codebase (Both Raspberry PI Python and C++ Arduino Nano stepper motor interface code) <a href="https://github.com/SailingDreamer/RaspberryPITurret">here</a>
+

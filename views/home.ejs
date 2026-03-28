@@ -2,8 +2,8 @@
 <h1>Home</h1>
 <p><%= homeStartingContent %></p>
 <% posts.forEach(post => { %>
-   <h2><%= post.postTitle %></h2>
-   <p class="postBody"><%= _.truncate(post.postBody, {'length': 100, 'omission': ' ...'}) %></p>
-   <a href="/posts/<%= post._id %>">Read More</a>
+   <h2><%= post.getTitle() %></h2>
+   <p class="postBody"><%= _.truncate(post.getBody(), {'length': 100, 'omission': ' ...'}) %></p>
+   <a href="/posts/<%= post.getID() %>">Read More</a>
 <% }) %>
 <%- include('partials/footer'); %>
