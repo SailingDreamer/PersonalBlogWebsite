@@ -14,26 +14,19 @@ const fs = require('fs').promises;
 const { request } = require('http');
 
 
-const homeStartingContent = `Greetings, and thank you for visiting my Personal Blog!
+const homeStartingContent = `Greetings, and thank you for visiting my personal blog!
 
-This documentation is dedicated towards my personal projects--mostly from 10-17 years old,
-providing an extensive account of the various engineering activities I have engaged in from
-and early age. From AI-tracking turrets to PCB design, I have immersed myself into the vast 
-landscape of intellecutal curiousity and STEM participation. 
+This site documents my personal projects—primarily from ages 10 to 17—providing an extensive account of the engineering work I have pursued from an early age. From AI tracking turrets to PCB design, I have immersed myself in a wide range of intellectually curious, STEM-driven projects.
 
-If you have any questions or wish to implement/imitate some of the resources presented in
-this project blog, feel free to reach out to me!`;
+If you have any questions or would like to implement or build upon any of the resources presented here, feel free to reach out!`;
 
 const aboutContent = `Hello!
 
-I, Nathan Field-Patton, am a programming autodidact and engineering enthusiast with experience in
-embedded engineering on various platforms. Throughout my career I have utilized autonomous systems,
-low-level programming, CAD, and open-source contributions to contribute towards my unique and creative
-goals. I have also worked with complex teams in engaging environments, contributing while learning.`;
+I am Nathan Field-Patton, a self-taught programmer and engineering enthusiast with experience in embedded systems across various platforms. Throughout my work, I have applied autonomous systems, low-level programming, CAD, and open-source contributions to pursue innovative and creative goals. I have also collaborated with diverse teams in dynamic environments, contributing meaningfully while continuously learning.`;
 
 const contactContent = `Personal email: nfieldpatton@email.com
 Phone number: 425 215-6361
-LinkedIn: https://www.linkedin.com/in/nathan-field-patton-a77bab27a/`
+<a href="https://www.linkedin.com/in/nathan-field-patton-a77bab27a/">LinkedIn</a>`
 
 const app = express();
 app.locals._ = _
@@ -112,23 +105,23 @@ async function readWithPath(path) {
     posts.push(new Post("Open Source Phantom Doppler Machine", await readWithPath("./public/post_text/Phantom.txt"), 1));
 
     //RatioZero transmission
-    // posts.push(new Post("Ratio Zero Transmission", "Soon to be posted", 2));
+    posts.push(new Post("Ratio Zero Transmission", "Soon to be posted", 2));
 
     //Integrated room environment
     // posts.push(new Post("Integrated room ESP32 environment", "Soon to be posted", 3));
-    posts.push(new Post("Integrated ESP32 environment Room", await readWithPath("./public/post_text/MorningLight.txt"), 3));
+    posts.push(new Post("Integrated ESP32 Room Environment", await readWithPath("./public/post_text/MorningLight.txt"), 3));
 
       //Main controller
-      // posts.push(new Post("", "Soon to be posted", 4));
+      posts.push(new Post("", "Soon to be posted", 4));
 
       //BLE light switch.
-      // posts.push(new Post("", "Soon to be posted", 5));
+      posts.push(new Post("", "Soon to be posted", 5));
 
       //Vent fan control.
-      // posts.push(new Post("", "Soon to be posted", 6));
+      posts.push(new Post("", "Soon to be posted", 6));
 
       //Curtain-powering rope design.
-      // posts.push(new Post("", "Soon to be posted", 7));
+      posts.push(new Post("", "Soon to be posted", 7));
 
 
     //Student safety tracker (IB IA)
@@ -141,16 +134,16 @@ async function readWithPath(path) {
     posts.push(new Post("Small vehicle Meta-project", await readWithPath("./public/post_text/GoKart.txt"), 9));
 
       //turret calculations
-      // posts.push(new Post("", "Soon to be posted", 10));
+      posts.push(new Post("Vehicle Series: Turret Calculations", "Soon to be posted", 10));
 
       //Arduino PID for yaw and pitch stepper motor system
-      // posts.push(new Post("", "Soon to be posted", 11));
+      posts.push(new Post("Vehicle Series: Arduino PID for Turret", "Soon to be posted", 11));
 
       //electrical routing system for directional turret
-      // posts.push(new Post("", "Soon to be posted", 12));
+      posts.push(new Post("Vehicle Series: Turret Electronics Wiring and Boosters", "Soon to be posted", 12));
 
     //Car repairs
-    // posts.push(new Post("Car Repairs", "", 13));
+    posts.push(new Post("Car Repairs and Maintenance", "Soon to be posted", 13));
     // posts.push(new Post("Car Repairs", await readWithPath("./public/post_text/GoKart.txt"), 13));
 
   } catch (err) {

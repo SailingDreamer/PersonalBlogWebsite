@@ -1,75 +1,126 @@
 <b>Problem Statement</b>:
-
+Doppler Phantoms are artificial, specialized devices used in medical imaging to calibrate and test the accuracy of ultrasound machines, particularly measuring blood flow velocity and direction. Unfortunately, the small consumer clique and low demand for doppler phantoms brings about extremely high costs ($2,500-10,000+) makes the barier to entry extremely strong. If the doppler medical device economy is to prosper and prevent monopolization, reducing this high entry cost for each doppler testing phantom would break down this wall 
 
 <b>Mission</b>:
-With youthfull ambition and the desire to start a project capable of assisting in future projects, I started the process of building a small, two-seated vehicle capable of drive and neutral gears along with a steering shack. 
+With inspiration from <br>Zurich's DopFlow Open Source Fully-Programmable Flow Phantom for Doppler Ultrasound</br>, I decided to make my own iteration of this project using only 3D printed parts, a medicinal syringe, and a linear actuator from an old 3D printer. 
 
 <b>Requirements</b>:
 
-* Convert a verically-mounted lawnmower engine to a horizontal shaft motor capable of driving the rear axle on the vehicle. 
-* Create a steering assembly capable of rotating both front wheels with relative ease and little mechanical play. 
-* Create a frame strong enough to support my 100 pound body (This would change in the future!)
-* Create a reliable belt-driven linkage between the motor and the rear axle, allowing the driver to adjust tension to engage and disengage the clutch. 
+* Create a connector between the customized linear actuator and the syringe, allowing the piston to be removed easily.
+* Ensure the stepper motor has enough torque to displace enough water in little time.
+* Mimic various systolic-diastolic heart beats for medical device testing. 
+* Create ESP32 serial communication code capable of relaying speeds from the computer to the microcontroller with lower than 10ms delay.
+* Ensure syringe system does not surpass front and rear linear actuator boundaries (limit switch override even if code fails)
 
-(NOTE: I started this project five years ago, so my recollection may not be perfect)
+<b>Base Adaptation for the Linear Actuator</b>:
 
-<b>Initial Design</b>:
-I started building the frame on the mini vehicle by throwing together two chasse side beams and a rear mount for the engine I had relocated from an old lawn mower. 
 
-All internal combustion engines require sufficient lubriciation, with most yard mowers using a small pump to ensure oil travels through the crankshaft, to the piston rings, and other moving assemblies. This system would normally suffice, but since the vehicle requires a horizontally-mounted engine crankshaft, I needed to redesign this oil feeding system.
 
-I started by filing down the cast iron sleve around the crankshaft, removing the engine's front and rear oil seals to make this modification. I also used heat-resistant epoxy to fill old channels and ensure oil did not escape the newly-orientated motor. Furthermore, I added an crankshaft 'scoup' (a small protruding aluminum piece) to the crankshaft to ensure the oil in the sump was picked up and thrown against the piston walls to prevent scoring. 
+<b>Connector Between Syringe and the Linear Actuator</b>:
 
-<b>MK1 (Early Pandemic)</b>
-Here was one of the first copies of the humble project. I was around 12 years old at the time, so my knowlege of mechanical engineering may have not been perfect.
+Here is the rear mount coupled with the belt-driven syringe holder:
 
-<img src="/post_images/GoKart/DF5A1F40-6D7E-4E73-AE01-3CC62F2C8324_1_105_c" alt="Description of the image" style="width: 100%; height: auto;">
+<img src="/post_images/DopplerPhantom/IMG_5255.jpg" alt="Description of the image" style="width: 100%; height: auto;">
 
-Starting from the front, a simple steering aluminum steering column controlled by an offset steering shaft arm joint moved the front wheels form side to side. Although this iteration was not sufficiently geared down or secured properly, it was able to drive.
+Here is the front-mounted holder:
 
-Following to the rear, my impromptu lawnmower engine shaft tranmits rotational power through a pulley reduction to the rear axel. As you could imagine, a significant amount of force was needed to put the vehicle into gear, i.e., pull the lever connected to a pulley snug against the belt hard enough for the engine to transmit energy to the drivetrain. 
+<img src="/post_images/DopplerPhantom/IMG_5261.jpg" alt="Description of the image" style="width: 100%; height: auto;">
 
-<img src="/post_images/GoKart/365D61B6-B9C5-4BDC-B8DF-397F389FFD85_1_105_c" alt="Description of the image" style="width: 100%; height: auto;">
 
-This first edition, although extremely primative and simplified, got things moving (pun intended)
+<b>Limit Switches</b>:
 
-<b>Later Frame Adjustments and Engine Replacement</b>:
+<img src="/post_images/DopplerPhantom/IMG_5256.jpg" alt="Description of the image" style="width: 100%; height: auto;">
 
-The frame was later updated, adding far more beams to support the two-person load and upgrading the engine to a high-torque comerical motor and the transmission to a chain-drive with an adjustable tensioner.
+<b>Electrical Setup</b>:
 
-<img src="/post_images/GoKart/A93EB089-B173-499E-90A0-71CA04506A58_1_105_c" alt="Description of the image" style="width: 100%; height: auto;">
+<img src="/post_images/DopplerPhantom/IMG_5259.jpg" alt="Description of the image" style="width: 100%; height: auto;">
 
-A frontal bumber was added along with a replaced steering column--this time using steel instead of aluminum to handle the stress. 
+<b>Programming</b>:
 
-<img src="/post_images/GoKart/2F3643C9-578C-416E-B58A-F3C1D5FE2150_1_105_c" alt="Description of the image" style="width: 100%; height: auto;">
+<em>
 
-An adjustable tensioner was mounted on the loose end of the engine, allowing for easy modifications.
+When analyzing the Zurich Lab’s phantom system and the STM32 microcontroller program’s architecture, we can see that the fundamental communication between master and slave is a transfer of stepper speeds. As opposed to sending an array of wave amplitudes and time intervals from the host computer to the Arduino initially, the system constantly sends hundreds of integer speed values per second. Although this communication may sound computationally taxing, it makes the interface between the existing Zurich software and the Arduino system significantly less troublesome to implement and control. 
 
-<b>Adding lights, drive sticks, a CVT transmission and more</b>:
+For ease of demonstration, I will first introduce the manipulated computer-side program. Within the Zurich Doppler Phantom System's application, the speed_control.py file carries out the imperative control of the GUI and the serial communication system between the slave device and the host computer. Inside of this file, rudimentary changes were made to the send_speed() function. 
 
-<img src="098184EF-3600-4714-BDFE-8BA2CCA367AF_1_105_c" alt="Description of the image" style="width: 100%; height: auto;">
+<pre>
+def send_speed(self, speed, unit: str="m/s"):
+    #motor speed is int step per microsec
+    STEPS_PER_TURN = 1
+    if abs(speed) < 1e-8:
+        mot_speed = 0
+    else:
+        mot_speed = speed*800
 
-<img src="25A14684-F732-4E89-A860-88118092D917_1_102_o" alt="Description of the image" style="width: 100%; height: auto;">
+    message = str(int(mot_speed+.5))+'\n'
+    try:
+        self.ser.write(bytes(message, 'utf-8'))
+    except: # so that it doesn't crash if disconnected
+        return 0
+    else:
+        return 1
+</pre>
 
-<b>Past and Future Projects Combined With the Small Vehicle</b>:
+For the example's sake, avert your eyes from the first conditional (infinitesimal check), and focus on the else statement. In this simple equation, the normalized speed is scaled into mot_speed by multiplication. The choice of 800 was specific to my stepper motor and its max speed of 800 (if I request a value over this limit the stepper motor will stall). Although this value should be a global constant in the future, it functionally suffices ad hoc. This mot_speed variable then goes through some changes before being converted into a string and serialized. 
 
-Rear-Mounted Turret System:
-Soon to be posted <a href="/posts/10>here</a>
+Now that we have established the Zurich Lab's method of sending stepper motor speeds over a port and the impromptu changes made to the functionality of the application, we can move to the client-side doppler phantom.
 
-Arduino PID for Yaw and Pitch Stepper Motor System
-Soon to be posted <a href="/posts/11>here</a>
+Arduino programs are organized with an initial setup() function called once near the beginning of the program, and a loop() function called continuously. Although I am using an ESP32 microcontroller and not an Arduino, the same underlying program should function for other use cases. Here is the serial listener used to receive the serialized stepper speeds from the aforementioned master-side program:
 
-Electrical Routing for Multidirectional Turret
-Soon to be posted <a href="/posts/12>here</a>
+<pre>
+void loop() {
+  if ((stepperOne.getCurrentPositionInSteps() < experimentalStepsInFullLoad) || (stepperOne.getCurrentPositionInSteps() > 0)) {
+    refillSyringe(stepperOne, backLimitSwitch, frontLimitSwitch, stepperMaxSpeed, stepperMaxAcceleration);
+    syringeDir = 1;
+  }
+
+  if ((stepperOne.getCurrentPositionInSteps() < experimentalStepsInFullLoad+(trimAdjustRev*stepsInRev))) {
+    syringeDir = -1;
+  } else if (stepperOne.getCurrentPositionInSteps() > -(trimAdjustRev*stepsInRev)) {
+    syringeDir = 1;
+  }
+
+  if(Serial.available() > 0) { // <-------------- HERE
+    int speed = Serial.readString().toInt();
+    if (speed == 0) {
+      stopSpeed(stepperOne);
+    } else {
+      stepperOne.setSpeedInStepsPerSecond(abs(speed));
+      runSpeed(stepperOne, (-1*(speed/abs(speed)))*syringeDir);
+      Serial.println(syringeDir);
+    }
+
+    Serial.println(speed);
+  }
+
+  if (!digitalRead(backLimitSwitch) || !digitalRead(frontLimitSwitch)) {
+    experimentalStepsInFullLoad = calibrate(stepperOne, backLimitSwitch, frontLimitSwitch);
+    refillSyringe(stepperOne, backLimitSwitch, frontLimitSwitch, stepperMaxSpeed, stepperMaxAcceleration);
+    syringeDir = 1;
+  }
+}
+</pre>
+
+Please ignore the safety limit switch conditionals inside of the loop function and focus on the if(Serial.available() > 0) conditional. The ESP32 (Arduino) waits for incoming data on the serial port. If a message is sent, the Serial.availible() method returns an integer greater than one, allowing the program to read the collected string and convert it into an integer. This value is then passed to the stepper object's setSpeedInStepsPerSecond() method before having the custom runSpeed() method create a thread to continuously update the stepper motor's driver and ensure constant speed. 
+
+Although this pipeline has been adapted to my specific situation, it works best with minimal changes to the Zurich Lab's complex program, allowing flexible adjustments to waveforms and general ease of use. 
+</em>
+
+If you would like a full copy of the code, please visit the GitHub repository linked below containing the ESP32 serial communication and stepper motor control system programs.
 
 <b>Resources</b>:
 
-Vehicle/Various Accessories CAD <a href="https://cad.onshape.com/documents?nodeId=9949134198be861402e8bf00&resourceType=folder">here</a>
-
-Predator Engine <a href="https://www.harborfreight.com/brands/predator/engines.html">here</a>
+Doppler Syringe Control CAD <a href="https://cad.onshape.com/documents/5ac0903a432f1071e5457f8f/w/31d7ba3d05289911dc0081bc/e/30dca64fded963b772296101">here</a>
 
 Stepper Motor Driver <a href="https://www.amazon.com/Purple-TMC2209-Module-Stepper-Printer/dp/B0FKG2PZLZ/ref=sr_1_4_sspa?dib=eyJ2IjoiMSJ9.GV128XORp0r3wV79x09f8T9cXh-swpK_3JLmyNIpW84vTXJDG-zmJT-g95VwiMiQUfEubW61Xq7edJwrL5TJ5uG4Crkd-Bx-1nxFogMSl575zZ-aJpLV3MddSn2O6O3yXch8F2ds_IHCNnCOMFw1SnYEYpFjVMol9XzX-fDJeKYO7j4olrB_nzBf7pn54aV7rngR5NxuCogWhLzXFiJULCGA_ijnuB1jsdtJWw5mjhA.GLNYiezkmQ31VWqh-zu_zdimIPR_E2xcF9N0IluF0Yk&dib_tag=se&keywords=tmc2209&qid=1774677838&sr=8-4-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9tdGY&psc=1">here</n>
 
-Servo <a href="https://www.digikey.com/en/products/detail/dfrobot/SER0067/23028647">here</a>
+Stepper Motor <a href="https://www.amazon.com/STEPPERONLINE-Stepper-Bipolar-42x42x38mm-Connector/dp/B0B38GX54H/ref=sr_1_3_pp?dib=eyJ2IjoiMSJ9.Qa3CQUjLdgK6uEHpJhtsnFXz-TV-AWBh2GcOSdV9U0M5mYIVCRoX0qBajEdic258fIYf-cU7jjAwsnx97bXcDd03YT_ewT6SPMdXsLOoXq4ELUg5MuugbEhklxajAvY471CXskHh2NH8RwPlE4xRoleBcqwhc0eWyiWRmr4w-QTIsqaPRUEAzKIKSAqHLNRTt3YknZJGEQtu9uCrged13jjVw2v_JiVBPF7OHkLT13M.xKXlaIzFfzIwT1PDkdhyM0f8xfp5GRDJggRBJxlxBMU&dib_tag=se&keywords=nema+17+stepper+motor&qid=1774740863&sr=8-3">here</a>
 
-Codebase (For later rear-mounted turret control) <a href="https://github.com/SailingDreamer/RaspberryPITurret">here</a>
+Limit Switch <a href="https://www.digikey.com/en/products/detail/omron-electronics-inc-emc-div/SS-5GL/272367?gclsrc=aw.ds&gad_source=1&gad_campaignid=20509826117&gbraid=0AAAAADrbLliDVbA_cAPq7gLSKnQEdM1wU&gclid=Cj0KCQjw1ZjOBhCmARIsADDuFTACWWl7I8pZbJ9I787Imoc2upOHtJKc7eGWAGYB_qbXjDLnzJev888aAhIPEALw_wcB">here</a>
+
+Codebase (Contains the ESP32 code and updated Zurich computer-side controller) <a href="https://github.com/SailingDreamer/DopplerFlow">here</a>
+
+
+<br>Holistic Image</br>:
+
+<img src="/post_images/DopplerPhantom/IMG_5255.jpg" alt="Description of the image" style="width: 100%; height: auto;">

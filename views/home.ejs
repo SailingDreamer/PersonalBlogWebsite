@@ -2,8 +2,8 @@
 <h1>Home</h1>
 <p><%- homeStartingContent.replace(/\n/g, '<br>') %></p>
 <% posts.forEach(post => { %>
-   <h2><%- post.getTitle().replace(/\n/g, '<br>') %></h2>
-   <p class="postBody"><%- _.truncate(post.getBody().replace(/\n/g, '<br>'), {'length': 100, 'omission': ' ...'}) %></p>
+   <h3><%- post.getTitle().replace(/\n/g, '<br>') %></h3>
+   <p class="postBody"><%- _.truncate(post.getBody(), {'length': 270, 'omission': ' ...'}).replace(/\n/g, '<br>') %></p>
    <a href="/posts/<%= post.getID() %>">Read More</a>
 <% }) %>
 <%- include('partials/footer'); %>

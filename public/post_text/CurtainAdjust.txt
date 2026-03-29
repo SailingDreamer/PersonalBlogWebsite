@@ -16,23 +16,17 @@ Since this project was electronics-heavy, I started by experimenting with NPN tr
 
 <b>Setup</b>:
 
-Electrical setup. Although this is quite the rats nest (a PCB would be prefered) I'll explain the inputs and outputs. 
+Closer demonstration of the 3D printed Stepper Motor interface for adjusting the curtain lines. The system uses two 1:2 reduction gears, giving the drive reduction a total of 1:4 reduction between the stepper shaft and the pulleys controling the string.
 
-* The electrical input from the original LED set I cut and soldered comes in through the lower power bank on the upper breadboard.
+<img src="/post_images/MorningLight/IMG_5279.jpg" alt="Description of the image" style="width: 100%; height: auto;">
 
-* The electrical output (above the transistors) for the three RGB channels and the ground connects to the upper breadboard. 
+Setup with the right and left string holders. Please note that the string should be taught, not loose like in the photo, when the system is calibrated. 
 
-* The ESP32 (left section of the upper breadboard) is configured for three button inputs (described below), three wires to control the gate pin on the MOSFETS, a few auxiliary pins for I2C communication with the LED display, two additional pins for the red "L" and "F" pins telling the user whether the fan or light systems are set to turn on in the morning, and a wireless bluetooth and WI-FI connection with the time configuration server and the other smart room devices (View section below for a better description).
+<img src="/post_images/MorningLight/IMG_5280.jpg" alt="Description of the image" style="width: 100%; height: auto;">
 
-<img src="/post_images/MorningLight/IMG_5277.jpg" alt="Description of the image" style="width: 100%; height: auto;">
+I also needed to solder a voltage-reducing buck converter to adjust the 9V+ battery voltage for the 5V servos and the microcontroller. Although I would recommend using a higher wattage reducer, <a href="https://www.digikey.com/en/products/detail/dfrobot/DFR0952/18069216?gclsrc=aw.ds&gad_source=1&gad_campaignid=20232005509&gbraid=0AAAAADrbLlgzd72Km0yhVADnGyU3KUjm_&gclid=Cj0KCQjw1ZjOBhCmARIsADDuFTCr6Oeg5VGvOvmBOS-64_CZCDZin1YixsS-FqGPT9qbPFgEnWuGlEwaAi0lEALw_wcB">this</a> small, easily soldered component seemed to preform well. 
 
-Mosfet channel (source, gate, and drain). There are three of these for the RGB LED control. Typically, the morning light sequence slowly increases the voltage on the gate pin, prioritizing Red and Green MOSFETS to ensure the yellow hue of the sun peeks out first. 
 
-<img src="/post_images/MorningLight/IMG_5281.jpg" alt="Description of the image" style="width: 100%; height: auto;">
-
-Although I never presented it, the wires heading to the commerical LED strip were cut and spliced to connect to the breadboard. Here is a larger picture:
-
-<img src="/post_images/MorningLight/IMG_5276.jpg" alt="Description of the image" style="width: 100%; height: auto;">
 
 <b>Resources</b>:
 
